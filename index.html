@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山珍海味</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 认证界面 -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-card">
+            <h1>山珍海味</h1>
+            <div class="auth-tabs">
+                <button id="loginTab" class="active">登录</button>
+                <button id="registerTab">注册</button>
+            </div>
+            
+            <!-- 登录表单 -->
+            <div id="loginForm" class="auth-form">
+                <input type="text" id="loginUsername" placeholder="用户名">
+                <input type="password" id="loginPassword" placeholder="密码">
+                <button id="loginButton">登录</button>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <input type="text" id="registerUsername" placeholder="用户名">
+                <input type="password" id="registerPassword" placeholder="密码">
+                <input type="password" id="registerConfirmPassword" placeholder="确认密码">
+                <button id="registerButton">注册</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 聊天界面 -->
+    <div id="chatContainer" class="chat-container" style="display: none;">
+        <div class="chat-header">
+            <h1>山珍海味</h1>
+            <div class="user-info">
+                <span id="currentUser"></span>
+                <button id="logoutButton">退出</button>
+            </div>
+        </div>
+        <div class="chat-main">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <!-- 导航 -->
+                <div class="nav">
+                    <button id="personalTab" class="nav-button active">个人</button>
+                    <button id="friendsTab" class="nav-button">好友</button>
+                    <button id="chatTab" class="nav-button">聊天</button>
+                    <button id="squareTab" class="nav-button">广场</button>
+                </div>
+                
+                <!-- 个人板块 -->
+                <div id="personalSection" class="section active">
+                    <h3>个人信息</h3>
+                    <div class="personal-info">
+                        <div class="info-item">
+                            <span class="label">用户名:</span>
+                            <span id="personalUsername"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">ID:</span>
+                            <span id="personalId"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">状态:</span>
+                            <span id="personalStatus">在线</span>
+                        </div>
+                    </div>
+                    <div class="add-friend-section">
+                        <h4>添加好友</h4>
+                        <input type="text" id="friendIdInput" placeholder="输入好友ID">
+                        <button id="addFriendButton">添加</button>
+                    </div>
+                    <div class="friend-requests-section">
+                        <h4>好友请求</h4>
+                        <ul id="friendRequestsList">
+                            <!-- 好友请求将在这里显示 -->
+                        </ul>
+                    </div>
+                    <div class="post-section">
+                        <h4>发布内容</h4>
+                        <textarea id="postInput" placeholder="分享你的想法..."></textarea>
+                        <div class="post-type-section">
+                            <label for="postType">内容类型：</label>
+                            <select id="postType">
+                                <option value="专业课书籍">专业课书籍</option>
+                                <option value="通识课书籍">通识课书籍</option>
+                                <option value="公共课书籍">公共课书籍</option>
+                                <option value="日常用品">日常用品</option>
+                            </select>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" multiple style="margin-bottom: 10px;">
+                        <button id="postButton">发布</button>
+                    </div>
+                    <div class="my-posts-section">
+                        <h4>我的发布</h4>
+                        <div id="myPostsList">
+                            <!-- 我的发布将在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 好友列表板块 -->
+                <div id="friendsSection" class="section" style="display: none;">
+                    <h3>好友列表</h3>
+                    <ul id="friendList">
+                        <!-- 好友列表将在这里显示 -->
+                    </ul>
+                </div>
+                
+                <!-- 聊天列表板块 -->
+                <div id="chatListSection" class="section" style="display: none;">
+                    <h3>聊天记录</h3>
+                    <ul id="chatList">
+                        <!-- 聊天列表将在这里显示 -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="main-content">
+                <!-- 聊天消息 -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- 消息将在这里显示 -->
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="messageInput" placeholder="输入消息...">
+                    <button id="sendButton">发送</button>
+                </div>
+                
+                <!-- 广场板块 -->
+                <div id="squareSection" class="section" style="display: none;">
+                    <h3>广场</h3>
+                    <div class="square-filter">
+                        <label for="squareFilter">分类查找：</label>
+                        <select id="squareFilter">
+                            <option value="all">全部</option>
+                            <option value="专业课书籍">专业课书籍</option>
+                            <option value="通识课书籍">通识课书籍</option>
+                            <option value="公共课书籍">公共课书籍</option>
+                            <option value="日常用品">日常用品</option>
+                        </select>
+                    </div>
+                    <div class="square-posts" id="squarePosts">
+                        <!-- 广场内容将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
