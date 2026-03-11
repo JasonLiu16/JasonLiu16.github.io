@@ -1,10 +1,11 @@
-// 本地存储作为备用方案
+// 使用LocalStorage作为主要存储，并添加简单的同步机制
 const STORAGE_KEYS = {
     USERS: 'chat_users',
     FRIENDS: 'chat_friends',
     FRIEND_REQUESTS: 'chat_friend_requests',
     POSTS: 'chat_posts',
-    MESSAGES: 'chat_messages'
+    MESSAGES: 'chat_messages',
+    SYNC_TIMESTAMP: 'chat_sync_timestamp'
 };
 
 // 初始化本地存储
@@ -24,6 +25,9 @@ function initLocalStorage() {
     if (!localStorage.getItem(STORAGE_KEYS.MESSAGES)) {
         localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify({}));
     }
+    if (!localStorage.getItem(STORAGE_KEYS.SYNC_TIMESTAMP)) {
+        localStorage.setItem(STORAGE_KEYS.SYNC_TIMESTAMP, Date.now().toString());
+    }
 }
 
 // 本地存储操作
@@ -33,6 +37,36 @@ function getLocalStorage(key) {
 
 function setLocalStorage(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
+    // 更新同步时间戳
+    localStorage.setItem(STORAGE_KEYS.SYNC_TIMESTAMP, Date.now().toString());
+}
+
+// 导出数据功能
+function exportData() {
+    const data = {
+        users: getLocalStorage(STORAGE_KEYS.USERS),
+        friends: getLocalStorage(STORAGE_KEYS.FRIENDS),
+        friendRequests: getLocalStorage(STORAGE_KEYS.FRIEND_REQUESTS),
+        posts: getLocalStorage(STORAGE_KEYS.POSTS),
+        messages: getLocalStorage(STORAGE_KEYS.MESSAGES),
+        timestamp: Date.now()
+    };
+    return JSON.stringify(data);
+}
+
+// 导入数据功能
+function importData(jsonData) {
+    try {
+        const data = JSON.parse(jsonData);
+        setLocalStorage(STORAGE_KEYS.USERS, data.users);
+        setLocalStorage(STORAGE_KEYS.FRIENDS, data.friends);
+        setLocalStorage(STORAGE_KEYS.FRIEND_REQUESTS, data.friendRequests);
+        setLocalStorage(STORAGE_KEYS.POSTS, data.posts);
+        setLocalStorage(STORAGE_KEYS.MESSAGES, data.messages);
+        return { success: true };
+    } catch (e) {
+        return { error: '导入失败' };
+    }
 }
 
 // API调用函数
@@ -278,7 +312,11 @@ const api = {
 
     sendMessage: (senderId, receiverId, text) => apiCall('/api/messages', 'POST', { senderId, receiverId, text }),
 
-    updateUserStatus: (userId, online) => apiCall('/api/updateUser', 'POST', { userId, online })
+    updateUserStatus: (userId, online) => apiCall('/api/updateUser', 'POST', { userId, online }),
+
+    exportData: exportData,
+
+    importData: importData
 };
 
 window.api = api;

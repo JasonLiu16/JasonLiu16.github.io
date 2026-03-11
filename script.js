@@ -119,6 +119,10 @@ function bindEvents() {
     addFriendButton.addEventListener('click', addFriend);
     postButton.addEventListener('click', publishPost);
     squareFilter.addEventListener('change', loadSquarePosts);
+    
+    // 数据同步功能
+    document.getElementById('exportDataButton').addEventListener('click', exportData);
+    document.getElementById('importDataButton').addEventListener('click', importData);
 }
 
 function switchSection(section) {
@@ -1111,4 +1115,37 @@ function showImageModal(images, initialIndex) {
     modalContent.appendChild(closeButton);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
+}
+
+// 数据同步功能
+function exportData() {
+    const data = api.exportData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `chat-data-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert('数据导出成功');
+}
+
+function importData() {
+    const input = document.getElementById('importDataInput');
+    const data = input.value.trim();
+    if (!data) {
+        alert('请粘贴导出的JSON数据');
+        return;
+    }
+    const result = api.importData(data);
+    if (result.success) {
+        alert('数据导入成功');
+        input.value = '';
+        // 重新加载数据
+        loadInitialData();
+    } else {
+        alert('数据导入失败');
+    }
 }
